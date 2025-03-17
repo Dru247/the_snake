@@ -85,8 +85,17 @@ class Snake(GameObject):
             self.next_direction = None
 
     def move(self):
-        pass
-        # self.positions.insert(0, )
+        if self.next_direction:
+            self.direction = self.next_direction
+            self.next_direction = None
+        now_width, now_height = self.positions[0]
+        direction_width, direction_height = self.direction
+        next_position = (
+            (now_width + direction_width) % SCREEN_WIDTH,
+            (now_height + direction_height) % SCREEN_HEIGHT
+        )
+        self.positions.insert(0, next_position)
+        self.positions = self.positions[:-1]
 
     def draw(self):
         for position in self.positions[:-1]:
@@ -100,8 +109,8 @@ class Snake(GameObject):
         pygame.draw.rect(screen, BORDER_COLOR, head_rect, 1)
 
         # Затирание последнего сегмента
-        if self.last:
-            last_rect = pygame.Rect(self.last, (GRID_SIZE, GRID_SIZE))
+        if len(self.positions) > 1:
+            last_rect = pygame.Rect(self.positions[-1], (GRID_SIZE, GRID_SIZE))
             pygame.draw.rect(screen, BOARD_BACKGROUND_COLOR, last_rect)
 
     def get_head_position(self):
@@ -133,11 +142,14 @@ def main():
     pygame.init()
     # Тут нужно создать экземпляры классов.
     apple = Apple()
+    snake = Snake()
 
     while True:
         clock.tick(SPEED)
-        handle_keys(apple)
+        handle_keys(snake)
         apple.draw()
+        snake.move()
+        snake.draw()
         pygame.display.update()
         # Тут опишите основную логику игры.
 
