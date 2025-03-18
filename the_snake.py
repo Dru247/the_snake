@@ -29,7 +29,7 @@ SNAKE_COLOR = (0, 255, 0)
 # Скорость движения змейки:
 
 # Изменить
-SPEED = 1
+SPEED = 3
 
 # Настройка игрового окна:
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), 0, 32)
@@ -59,8 +59,8 @@ class Apple(GameObject):
 
     def randomize_position(self):
         self.position = (
-            randint(0, GRID_WIDTH) * GRID_SIZE,
-            randint(0, GRID_HEIGHT) * GRID_SIZE
+            randint(0, GRID_WIDTH - 1) * GRID_SIZE,
+            randint(0, GRID_HEIGHT - 1) * GRID_SIZE
         )
 
     def draw(self):
@@ -89,9 +89,7 @@ class Snake(GameObject):
             self.next_direction = None
 
     def move(self):
-        if self.next_direction:
-            self.direction = self.next_direction
-            self.next_direction = None
+        self.update_direction()
         now_width, now_height = self.get_head_position()
         direction_width, direction_height = self.direction
         next_position = (
@@ -111,9 +109,9 @@ class Snake(GameObject):
             pygame.draw.rect(screen, BORDER_COLOR, rect, 1)
 
         # Отрисовка головы змейки
-        head_rect = pygame.Rect(self.positions[0], (GRID_SIZE, GRID_SIZE))
-        pygame.draw.rect(screen, self.body_color, head_rect)
-        pygame.draw.rect(screen, BORDER_COLOR, head_rect, 1)
+        # head_rect = pygame.Rect(self.positions[0], (GRID_SIZE, GRID_SIZE))
+        # pygame.draw.rect(screen, self.body_color, head_rect)
+        # pygame.draw.rect(screen, BORDER_COLOR, head_rect, 1)
 
         # Затирание последнего сегмента
         if self.last:
@@ -125,6 +123,7 @@ class Snake(GameObject):
         if self.get_head_position() == food.position:
             food.randomize_position()
             food.draw()
+            self.draw()
             self.fl_food = True
 
     def check_self_bite(self):
