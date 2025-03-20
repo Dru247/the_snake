@@ -1,6 +1,6 @@
-import pygame
-
 from random import randint
+
+import pygame
 
 from configs import (APPLE_COLOR, BOARD_BACKGROUND_COLOR, BORDER_COLOR, DOWN,
                      GRID_HEIGHT, GRID_SIZE, GRID_WIDTH, LEFT, RIGHT,
@@ -66,16 +66,16 @@ class Snake(GameObject):
         """Метод, проверяющий следующую позицию на самого себя или еду."""
         if self.__next_position in self.positions:
             self.reset()
-            return
-        else:
-            for food in args:
-                if (isinstance(food, Apple)
-                        and food.position == self.__next_position):
-                    food.randomize_position()
-                    food.draw()
-                    self.last = None
-                    return True
-            return False
+            return None
+
+        for food in args:
+            if (isinstance(food, Apple)
+                    and food.position == self.__next_position):
+                food.randomize_position()
+                food.draw()
+                self.last = None
+                return True
+        return False
 
     def move(self, *args):
         """
@@ -137,7 +137,8 @@ def handle_keys(game_object):
         if event.type == pygame.QUIT:
             pygame.quit()
             raise SystemExit
-        elif event.type == pygame.KEYDOWN:
+
+        if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP and game_object.direction != DOWN:
                 game_object.next_direction = UP
             elif event.key == pygame.K_DOWN and game_object.direction != UP:
