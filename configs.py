@@ -10,17 +10,25 @@ DOWN = (0, 1)
 LEFT = (-1, 0)
 RIGHT = (1, 0)
 
-# Цвет фона - черный:
-BOARD_BACKGROUND_COLOR = (0, 0, 0)
+COLOR_BLACK = (0, 0, 0)
+COLOR_LIME = (0, 255, 0)
+COLOR_RED = (255, 0, 0)
+COLOR_TURQUOISE = (93, 216, 228)
+
+# Цвет фона:
+BOARD_BACKGROUND_COLOR = COLOR_BLACK
 
 # Цвет границы ячейки
-BORDER_COLOR = (93, 216, 228)
+BORDER_COLOR = COLOR_TURQUOISE
 
 # Цвет яблока
-APPLE_COLOR = (255, 0, 0)
+APPLE_COLOR = COLOR_RED
 
 # Цвет змейки
-SNAKE_COLOR = (0, 255, 0)
+SNAKE_COLOR = COLOR_LIME
 
 # Скорость движения змейки:
 SPEED = 20
+
+# Начальная позиция игровых объектов
+START_POSITION = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
