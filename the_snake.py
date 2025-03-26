@@ -44,10 +44,12 @@ class GameObject:
 class Apple(GameObject):
     """Класс, описывающий яблоко и действия с ним."""
 
-    def __init__(self, busy_positions, body_color=None):
+    def __init__(self, busy_positions=None, body_color=None):
         if body_color is None:
             body_color = APPLE_COLOR
         super().__init__(body_color=body_color)
+        if busy_positions is None:
+            busy_positions = [self.position]
         self.randomize_position(busy_positions)
 
     def draw(self):
@@ -73,9 +75,7 @@ class Snake(GameObject):
         if body_color is None:
             body_color = SNAKE_COLOR
         super().__init__(body_color=body_color)
-        self.positions = [self.position]
-        self.direction = RIGHT
-        self.last = None
+        self.reset()
 
     def move(self):
         """
@@ -114,7 +114,9 @@ class Snake(GameObject):
 
     def reset(self):
         """Сбрасывает змейку в начальное состояние."""
-        self.__init__()
+        self.positions = [self.position]
+        self.direction = RIGHT
+        self.last = None
 
     def update_direction(self, direction):
         """обновляет направления после нажатия на кнопку."""
@@ -165,7 +167,11 @@ def main():
 
         if snake.get_head_position() in snake.positions[1:]:
             for position in snake.positions:
-                snake.draw_position(position, color=BOARD_BACKGROUND_COLOR)
+                snake.draw_position(
+                    position,
+                    color=BOARD_BACKGROUND_COLOR,
+                    border=False
+                )
             snake.reset()
 
         snake.draw()
