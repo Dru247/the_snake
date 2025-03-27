@@ -21,8 +21,8 @@ clock = pg.time.Clock()
 class GameObject:
     """Базовый класс, от которого наследуются другие игровые объекты."""
 
-    def __init__(self, body_color=None, position=None):
-        self.position = START_POSITION if position is None else position
+    def __init__(self, body_color=None, position=START_POSITION):
+        self.position = position
         self.body_color = body_color
 
     def draw_position(self, position, color=None, border=True):
