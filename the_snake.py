@@ -44,9 +44,7 @@ class GameObject:
 class Apple(GameObject):
     """Класс, описывающий яблоко и действия с ним."""
 
-    def __init__(self, busy_positions=None, body_color=None):
-        if body_color is None:
-            body_color = APPLE_COLOR
+    def __init__(self, busy_positions=None, body_color=APPLE_COLOR):
         super().__init__(body_color=body_color)
         if busy_positions is None:
             busy_positions = [self.position]
@@ -59,21 +57,18 @@ class Apple(GameObject):
     def randomize_position(self, busy_positions):
         """Устанавливает случайное положение яблока на игровом поле."""
         while True:
-            new_position = (
+            self.position = (
                 randint(0, GRID_WIDTH - 1) * GRID_SIZE,
                 randint(0, GRID_HEIGHT - 1) * GRID_SIZE
             )
-            if new_position not in busy_positions:
-                self.position = new_position
+            if self.position not in busy_positions:
                 break
 
 
 class Snake(GameObject):
     """Класс, описывающий змейку и её поведение."""
 
-    def __init__(self, body_color=None):
-        if body_color is None:
-            body_color = SNAKE_COLOR
+    def __init__(self, body_color=SNAKE_COLOR):
         super().__init__(body_color=body_color)
         self.reset()
 
@@ -123,6 +118,12 @@ class Snake(GameObject):
         self.direction = direction
 
 
+def game_quit():
+    """Функция завершения игры."""
+    pg.quit()
+    exit()
+
+
 def handle_keys(game_object):
     """Функция обработки действий пользователя."""
     for event in pg.event.get():
@@ -142,12 +143,6 @@ def handle_keys(game_object):
                 game_quit()
 
 
-def game_quit():
-    """Функция завершения игры."""
-    pg.quit()
-    exit()
-
-
 def main():
     """Основной фнкционал."""
     # Инициализация pygame:
@@ -164,8 +159,7 @@ def main():
             apple.randomize_position(busy_positions=snake.positions)
             apple.draw()
             snake.last = None
-
-        if snake.get_head_position() in snake.positions[1:]:
+        elif snake.get_head_position() in snake.positions[4:]:
             for position in snake.positions:
                 snake.draw_position(
                     position,
